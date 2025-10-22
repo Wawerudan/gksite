@@ -1,0 +1,133 @@
+{% load static%}
+<html>
+    <head>
+        <link rel="stylesheet" href="{%static 'styles.css'%}">
+    </head>
+
+    <body>
+        <nav>
+            <div class="name">
+                A.G.E
+            </div>
+            <div class="nav">
+  <a href="{%url 'signup'%}">Sign Up </a>
+  <a href="{%url 'login'%}">Login </a>
+ <a href="{%url 'viewcart' %}">Cart  <div class="length">{{request.session.cart|length}} </div></a>
+ <button onclick="showProfile()"><i class="fa fa-user" aria-hidden="true"></i> Profile</button>
+ {% if user.is_authenticated %}
+  <div id="profiles" class="profile">
+    <p>Name: {{ user.first_name }} {{ user.last_name }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Username: {{ user.username }}</p>
+
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit">Logout</button>
+    </form>
+  </div>
+{% endif %}
+            </div>
+
+        </nav>
+        <h2> Wifi Products </h2>
+        <div class="cont">
+            
+        {%for products in wifi%}
+        <div class="cont-card">
+        <a href="{%url 'productsdetail' products.id%}">
+     <img src="{{products.image.url}}">
+    </a>
+    <p> {{products.name}} </p>
+     <p><span> price:{{products.price}}</span> </p> 
+     <form action="{%url 'addcart' products.id%}" method="post">
+        {% csrf_token %}
+    <button type="submit"> Add to Cart </button>
+     </form>
+   
+</div>
+     {%endfor%}
+</div>
+<h2> Top This Week </h2>
+<div class="cont">
+     
+      {%for products in Top%}
+        <div class="cont-card">
+        <a href="{%url 'productsdetail' products.id%}">
+     <img src="{{products.image.url}}">
+    </a>
+    <p> {{products.name}} </p>
+     <p><span> price:{{products.price}}</span> </p> 
+     
+     <form action="{%url 'addcart' products.id%}" method="post">
+        {% csrf_token %}
+    <button type="submit"> Add to Cart </button>
+     </form>
+</div>
+     {%endfor%}
+</div>
+<h2> New Arrivals </h2>
+<div class="cont">
+     
+
+      {%for products in arrivals%}
+        <div class="cont-card">
+        <a href="{%url 'productsdetail' products.id%}">
+     <img src="{{products.image.url}}">
+    </a>
+    <p> {{products.name}} </p>
+     <p><span> price:{{products.price}}</span> </p> 
+    
+     <form action="{%url 'addcart' products.id%}" method="post">
+        {% csrf_token %}
+    <button type="submit"> Add to Cart </button>
+     </form>
+  
+</div>
+     {%endfor%}
+</div>
+<h2>Top|Deals </h2>
+<div class="cont">
+     
+      {%for products in deals%}
+        <div class="cont-card">
+        <a href="{%url 'productsdetail' products.id%}">
+     <img src="{{products.image.url}}">
+    </a>
+    <p> {{products.name}} </p>
+     <p><span> price:{{products.price}}</span> </p> 
+ 
+    <form action="{%url 'addcart' products.id%}" method="post">
+        {% csrf_token %}
+    <button type="submit"> Add to Cart </button>
+     </form>
+    
+</div>
+     {%endfor%}
+</div>
+<footer>
+    <div class="ft1">
+    <p> A.G.E</p>
+    <p>contanct us 0758838909 </p>
+    </div>
+    <div class="ft1">
+        <h5> Customer Service </h5>
+        <p> Return exchange </p>
+        <p>Return policy </p>
+        <p> Online Payment </p>
+
+    </div>
+    <div class="ft1">
+        <h5> Help and support </h5>
+        <p>Faqs </p>
+        <p> About us </p>
+    </div>
+
+</footer>
+  <script>
+function showProfile(){
+  let pay = document.getElementById("profiles");
+  pay.style.display = (pay.style.display === "block") ? "none" : "block";
+}
+</script>
+    </body>
+    </html>

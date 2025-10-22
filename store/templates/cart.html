@@ -1,0 +1,92 @@
+{% load static%}
+<html>
+    <head>
+        <link rel="stylesheet" href="{%static 'styles.css'%}">
+    </head>
+    <body>
+      <div class="cart-main">
+        <div class="cart-side">
+<h2>Your Cart</h2>
+{%for key, item in cart.items%}
+<div class="cart-items">
+<img src="{{item.image}}">
+<p><span> Price: {{item.price}} </span></p>
+<p>{{item.name}}</p>
+<p> Quantity:{{item.quantity}} </p>
+<form action="{%url 'addcart' key%}" method="post">
+        {% csrf_token %}
+<button type="submit"> <span> +  </span> </button>
+</form>
+<form action="{%url 'remove_from_cart' key%}" method="post">
+        {% csrf_token %}
+<button type="submit"> <span> - </span> </button>
+</form>
+</div>
+        
+{%endfor%}
+</div>
+
+      <div class="cart-side1">
+<h2> Total </h2>
+ <span> Kshs:{{total}} <span> <br> <br>
+<button onclick="mpesaPay1()"> Checkout</button>       
+<div  id="paympesa1"class="pay-mpesa">
+   <span> Enter your phone number to pay </span>
+ <form method="POST" action="/stkpush/">
+    {% csrf_token %}
+    <input 
+        type="text" 
+        name="number" 
+        placeholder="eg. 254758079624" 
+        required
+    >
+    <button type="submit">Pay with M-Pesa</button>
+</form>
+{% if message %}
+  <p style="color: green; font-weight: bold;">{{ message }}</p>
+{% endif %}
+{% if error %}
+  <p style="color: red; font-weight: bold;">{{ error }}</p>
+{% endif %}
+
+
+</div>
+</div>
+</div>
+<div class="footer">
+  <h5> Amount to pay </h5>
+ <span> Kshs:{{total}} <span> <br> <br>
+<button onclick="mpesaPay()"> Checkout</button> 
+   
+ <div id="paympesa"class="lip">
+  <span> Enter your phone number to pay </span>  <br>
+  <form method="POST" action="/stkpush/">
+    {% csrf_token %}
+    <input 
+        type="text" 
+        name="number" 
+        placeholder="eg. 254758079624" 
+        required
+    >
+    <button type="submit">Pay with M-Pesa</button>
+</form>
+{% if message %}
+  <p style="color: green; font-weight: bold;">{{ message }}</p>
+{% endif %}
+{% if error %}
+  <p style="color: red; font-weight: bold;">{{ error }}</p>
+{% endif %}
+</div>
+</div>
+  </body>
+  <script>
+function mpesaPay(){
+  let pay = document.getElementById("paympesa");
+  pay.style.display = (pay.style.display === "block") ? "none" : "block";
+}
+function mpesaPay1(){
+  let pay = document.getElementById("paympesa1");
+  pay.style.display = (pay.style.display === "block") ? "none" : "block";
+}
+</script>
+  </html>
