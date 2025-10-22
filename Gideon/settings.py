@@ -74,36 +74,26 @@ WSGI_APPLICATION = 'Gideon.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-USE_REMOTE_DB = True
+import dj_database_url
+import os
+
+USE_REMOTE_DB = True  # Change to False for local development
+
 if USE_REMOTE_DB:
-    # Clever Cloud DB
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'bif2k6uvlqwp58xg0ksz',  # DB name from Clever Cloud
-            'USER': 'uopo3vmmocjpzsry',
-            'PASSWORD': 'crbMQU5kd5A8p2jhHCgA',
-            'HOST': 'bif2k6uvlqwp58xg0ksz-mysql.services.clever-cloud.com',
-            'PORT': '3306',
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            },
-        }
+        'default': dj_database_url.config(
+            default='mysql://uopo3vmmocjpzsry:crbMQU5kd5A8p2jhHCgA@bif2k6uvlqwp58xg0ksz-mysql.services.clever-cloud.com:3306/bif2k6uvlqwp58xg0ksz',
+            conn_max_age=600,
+        )
     }
 else:
-  DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Gideon',
-        'PASSWORD':'Manchester45??',
-        'USER':'root',
-        'PORT' : '3306',
-        'HOST':'localhost',
-        
-        
+    DATABASES = {
+        'default': dj_database_url.config(
+            default='mysql://root:Manchester45??@127.0.0.1:3306/Gideon',
+            conn_max_age=600,
+            ssl_require=False
+        )
     }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
